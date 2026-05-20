@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="default">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Theme System Demo</title>
+  <style>
+    :root {
+      --c1: #008BFE;
+      --c2: #45DAD1;
+      --c3: #FE860E;
+      --c4: #FFAF16;
+      --c5: #536DFD;
+      --c6: #77A2FA;
+      --bg-page: #f5f7fa;
+      --bg-card: #fff;
+      --text-primary: #1a1a2e;
+      --text-secondary: #666;
+      --border: #e8e8e8;
+    }
+
+    [data-theme="blue"] {
+      --c1: #247DFF;
+      --c2: #7AF1FF;
+      --c3: #FF840A;
+      --c4: #FFDB43;
+      --c5: #9676FF;
+      --c6: #FC99E5;
+      --bg-page: #eef2f7;
+    }
+
+    [data-theme="red"] {
+      --c1: #FC4225;
+      --c2: #FF7D4B;
+      --c3: #9676FF;
+      --c4: #FC99E5;
+      --c5: #FFAF16;
+      --c6: #FFDB43;
+      --bg-page: #fdf2f2;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.6;
+      transition: background .3s;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    .theme-bar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      padding: 20px;
+      background: var(--bg-card);
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      align-items: center;
+    }
+
+    .theme-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-right: 8px;
+    }
+
+    .theme-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .theme-btn:hover {
+      border-color: var(--c1);
+      transform: translateY(-1px);
+    }
+
+    .theme-btn.active {
+      border-color: var(--c1);
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      color: white;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: linear-gradient(135deg, var(--c1), var(--c2));
+      color: white;
+      font-weight: 500;
+    }
+
+    .icons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .icon-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px 12px;
+      text-align: center;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+      transition: transform .2s, box-shadow .2s;
+      position: relative;
+    }
+
+    .icon-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-card svg {
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    .icon-label {
+      font-size: 14px;
+      color: var(--text-primary);
+      font-weight: 500;
+    }
+
+    .icon-class { display: none; }
+
+    .grad-bar {
+      display: flex;
+      justify-content: space-between;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      
+    }
+
+    .grad-btn {
+      width: 50%;
+      height: 88px;
+      border-radius: 6px;
+      border:none;
+      background: none;
+      font-size: 16px;
+      font-weight: normal;
+      color: transparent;
+      cursor: pointer;
+      transition: all .15s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+    }
+
+    .grad-btn:hover {
+  
+      color: var(--c1);
+  
+    }
+
+    /* ===== Class-based color system ===== */
+    .s1.grad-1 .icon-bg {
+      fill: url(#grad-1-bg);
+    }
+
+    .s1.grad-1 .icon-shadow {
+      fill: url(#grad-1-shadow);
+    }
+
+    .s1.grad-2 .icon-bg {
+      fill: url(#grad-2-bg);
+    }
+
+    .s1.grad-2 .icon-shadow {
+      fill: url(#grad-2-shadow);
+    }
+
+    .s1.grad-3 .icon-bg {
+      fill: url(#grad-3-bg);
+    }
+
+    .s1.grad-3 .icon-shadow {
+      fill: url(#grad-3-shadow);
+    }
+
+    .s1.grad-4 .icon-bg {
+      fill: url(#grad-4-bg);
+    }
+
+    .s1.grad-4 .icon-shadow {
+      fill: url(#grad-4-shadow);
+    }
+
+    .s1 .icon-main {
+      fill: url(#white-main);
+    }
+
+    .s1 .icon-sub {
+      fill: rgba(255, 255, 255, 0.5);
+    }
+
+    .s2.grad-1 .icon-bg {
+      fill: url(#radial-1-bg);
+    }
+
+    .s2.grad-1 .icon-main {
+      fill: url(#grad-1-bg);
+    }
+
+    .s2.grad-1 .icon-shadow {
+      fill: url(#grad-1-shadow);
+    }
+
+    .s2.grad-2 .icon-bg {
+      fill: url(#radial-2-bg);
+    }
+
+    .s2.grad-2 .icon-main {
+      fill: url(#grad-2-bg);
+    }
+
+    .s2.grad-2 .icon-shadow {
+      fill: url(#grad-2-shadow);
+    }
+
+    .s2.grad-3 .icon-bg {
+      fill: url(#radial-3-bg);
+    }
+
+    .s2.grad-3 .icon-main {
+      fill: url(#grad-3-bg);
+    }
+
+    .s2.grad-3 .icon-shadow {
+      fill: url(#grad-3-shadow);
+    }
+
+    .s2.grad-4 .icon-bg {
+      fill: url(#radial-4-bg);
+    }
+
+    .s2.grad-4 .icon-main {
+      fill: url(#grad-4-bg);
+    }
+
+    .s2.grad-4 .icon-shadow {
+      fill: url(#grad-4-shadow);
+    }
+
+    .s2.grad-1 .icon-sub {
+      fill: var(--c2);
+    }
+
+    .s2.grad-2 .icon-sub {
+      fill: var(--c4);
+    }
+
+    .s2.grad-3 .icon-sub {
+      fill: var(--c6);
+    }
+
+    .s2.grad-4 .icon-sub {
+      fill: var(--c2);
+    }
+
+    .s3.grad-1 .icon-main {
+      fill: url(#grad-1-bg);
+    }
+
+    .s3.grad-2 .icon-main {
+      fill: url(#grad-2-bg);
+    }
+
+    .s3.grad-3 .icon-main {
+      fill: url(#grad-3-bg);
+    }
+
+    .s3.grad-4 .icon-main {
+      fill: url(#grad-4-bg);
+    }
+
+    .s3.grad-1 .icon-sub {
+      fill: var(--c2);
+    }
+
+    .s3.grad-2 .icon-sub {
+      fill: var(--c4);
+    }
+
+    .s3.grad-3 .icon-sub {
+      fill: var(--c6);
+    }
+
+    .s3.grad-4 .icon-sub {
+      fill: var(--c2);
+    }
+
+
+    .s4.grad-1 .icon-main {
+      fill: url(#grad-1-bg);
+    }
+
+    .s4.grad-2 .icon-main {
+      fill: url(#grad-2-bg);
+    }
+
+    .s4.grad-3 .icon-main {
+      fill: url(#grad-3-bg);
+    }
+
+    .s4.grad-4 .icon-main {
+      fill: url(#grad-4-bg);
+    }
+
+    .s4 .icon-sub {
+      fill: rgb(30, 30, 30);
+    }
+
+    @media (max-width: 640px) {
+      .icons-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <svg style="position:absolute;width:0;height:0;">
+    <defs>
+      <linearGradient id="grad-1-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--c1)" />
+        <stop offset="1" stop-color="var(--c2)" />
+      </linearGradient>
+      <linearGradient id="grad-1-shadow" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--c1)" stop-opacity="0.25" />
+        <stop offset="1" stop-color="var(--c1)" stop-opacity="0.02" />
+      </linearGradient>
+      <radialGradient id="radial-1-bg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--c1)" stop-opacity="0" />
+        <stop offset="100%" stop-color="var(--c1)" stop-opacity="0.1" />
+      </radialGradient>
+      <linearGradient id="grad-2-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--c3)" />
+        <stop offset="1" stop-color="var(--c4)" />
+      </linearGradient>
+      <linearGradient id="grad-2-shadow" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--c3)" stop-opacity="0.25" />
+        <stop offset="1" stop-color="var(--c3)" stop-opacity="0.02" />
+      </linearGradient>
+      <radialGradient id="radial-2-bg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--c3)" stop-opacity="0" />
+        <stop offset="100%" stop-color="var(--c3)" stop-opacity="0.1" />
+      </radialGradient>
+      <linearGradient id="grad-3-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--c5)" />
+        <stop offset="1" stop-color="var(--c6)" />
+      </linearGradient>
+      <linearGradient id="grad-3-shadow" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="var(--c5)" stop-opacity="0.25" />
+        <stop offset="1" stop-color="var(--c5)" stop-opacity="0.02" />
+      </linearGradient>
+      <radialGradient id="radial-3-bg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--c5)" stop-opacity="0" />
+        <stop offset="100%" stop-color="var(--c5)" stop-opacity="0.1" />
+      </radialGradient>
+      <linearGradient id="grad-4-bg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--c1)" />
+        <stop offset="1" stop-color="var(--c5)" />
+      </linearGradient>
+      <linearGradient id="grad-4-shadow" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="var(--c1)" stop-opacity="0.25" />
+        <stop offset="1" stop-color="var(--c5)" stop-opacity="0.02" />
+      </linearGradient>
+      <radialGradient id="radial-4-bg" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="var(--c1)" stop-opacity="0" />
+        <stop offset="100%" stop-color="var(--c5)" stop-opacity="0.1" />
+      </radialGradient>
+
+      <linearGradient id="white-main" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="white" />
+        <stop offset="1" stop-color="rgba(255,255,255,0.85)" />
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <div class="container">
+    <h1>图标主题系统 Demo</h1>
+    <p class="subtitle">切换主题改变6个基础色 · 切换grad改变图标色系</p>
+
+    <div class="theme-bar">
+      <span class="theme-label">切换主题</span>
+      <button class="theme-btn active" data-theme="default" onclick="setTheme('default')">默认(青)</button>
+      <button class="theme-btn" data-theme="blue" onclick="setTheme('blue')">蓝色</button>
+      <button class="theme-btn" data-theme="red" onclick="setTheme('red')">红色</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">
+        风格1：渐变背景 + 白色图标
+        <span class="badge">s1 · 48×48</span>
+      </div>
+      <div class="icons-grid">
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-1" id="svg-service-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <rect x="14" y="9" width="7" height="11" rx="3.5" class="icon-sub" />
+            <rect x="27" y="9" width="6" height="11" rx="3" class="icon-sub" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M34.625 14C37.0412 14 39 15.9699 39 18.4V31.6C39 34.0301 37.0412 36 34.625 36H13.375C10.9588 36 9 34.0301 9 31.6V18.4C9 15.9699 10.9588 14 13.375 14H34.625ZM29.3729 20.9622C28.7089 20.408 27.7237 20.5001 27.1726 21.1678L23.1156 26.0847L21.3883 24.2376C20.7971 23.6054 19.8081 23.575 19.1794 24.1695C18.5508 24.764 18.5205 25.7587 19.1117 26.391L22.0505 29.5338C22.3573 29.8619 22.7895 30.0419 23.2371 30.028C23.6847 30.014 24.1052 29.8074 24.3912 29.4608L29.5774 23.1751C30.1284 22.5072 30.0369 21.5164 29.3729 20.9622Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">维修保养</div>
+          <div class="icon-class">s1 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-2" id="svg-oil-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <path
+              d="M22 9.5C22 8.11929 23.1193 7 24.5 7H27.5C28.8807 7 30 8.11929 30 9.5C30 10.8807 28.8807 12 27.5 12H24.5C23.1193 12 22 10.8807 22 9.5Z"
+              class="icon-sub" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M33.038 12.1506C34.2678 13.0293 35 14.4657 35 15.998V32.3043C35 34.8977 32.9405 37 30.4 37H16.6C14.0595 37 12 34.8977 12 32.3043V20.2121C12 18.7069 12.7072 17.2927 13.9013 16.4095L22.5679 10H30.0271L33.038 12.1506ZM20.8788 22.7778C19.7162 24.4563 19.9075 26.7454 21.3314 28.1991C22.9463 29.8476 25.5642 29.8476 27.1791 28.1991C28.6032 26.7454 28.7944 24.4564 27.6317 22.7778L24.2558 17.9033L20.8788 22.7778Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">加油</div>
+          <div class="icon-class">s1 · grad-2</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-3" id="svg-rescue-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <path
+              d="M37.1296 33.2314C38.7149 33.2314 40 34.3507 40 35.7314C40 37.1122 38.7149 38.2314 37.1296 38.2314H11.8704C10.2851 38.2314 9 37.1122 9 35.7314C9 34.3507 10.2851 33.2314 11.8704 33.2314H37.1296Z"
+              class="icon-sub" />
+            <path
+              d="M24.4814 8.26855C30.8225 8.26855 35.9629 13.409 35.9629 19.75V31.2227C35.9627 31.2274 35.9589 31.2313 35.9541 31.2314H13.0088C13.004 31.2313 13.0002 31.2274 13 31.2227V19.75C13 13.409 18.1404 8.26855 24.4814 8.26855ZM25.9316 15.291C25.976 14.9008 25.4901 14.6869 25.2324 14.9834L20.2588 20.71C20.0784 20.918 20.1572 21.242 20.4131 21.3438L23.1641 22.4346C23.3475 22.5074 23.4503 22.7031 23.4062 22.8955L22.6211 26.3193C22.5295 26.7191 23.0277 26.9821 23.3057 26.6807L28.6533 20.8789C28.8502 20.6651 28.7604 20.3197 28.4844 20.2285L25.7891 19.3369C25.6091 19.2775 25.4951 19.1004 25.5166 18.9121L25.9316 15.291Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">救援</div>
+          <div class="icon-class">s1 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-1" id="svg-drive-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <path
+              d="M16.8268 25.198C17.6668 27.953 20.0458 30.0327 22.9611 30.4373V37.9839C15.8937 37.4998 10.1721 32.1157 9.16001 25.198H16.8268Z"
+              class="icon-main" />
+            <path
+              d="M38.84 25.198C37.8279 32.1157 32.1063 37.4998 25.0389 37.9839V30.4373C27.9542 30.0327 30.3332 27.953 31.1732 25.198H38.84Z"
+              class="icon-main" />
+            <path
+              d="M24 7.98389C32.2843 7.98389 39 14.7079 39 23.0025C39 23.0409 38.9992 23.0793 38.9989 23.1176H31.4966C31.4972 23.0793 31.5 23.0409 31.5 23.0025C31.5 18.8552 28.1421 15.4932 24 15.4932C19.8579 15.4932 16.5 18.8552 16.5 23.0025C16.5 23.0409 16.5028 23.0793 16.5034 23.1176H9.00113C9.00084 23.0793 9 23.0409 9 23.0025C9 14.7079 15.7157 7.98389 24 7.98389Z"
+              class="icon-main" />
+            <path
+              d="M24 18.9839C26.2091 18.9839 28 20.7747 28 22.9839C28 25.193 26.2091 26.9839 24 26.9839C21.7909 26.9839 20 25.193 20 22.9839C20 20.7747 21.7909 18.9839 24 18.9839Z"
+              class="icon-sub" />
+          </svg>
+          <div class="icon-label">试驾</div>
+          <div class="icon-class">s1 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-1" id="svg-wash-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+            <path class="icon-main" d="M15.833 33C16.7403 33 17.4766 33.6716 17.4766 34.5C17.4766 35.3284 16.7403 36 15.833 36H13.6426C12.7354 35.9999 12 35.3283 12 34.5C12 33.6717 12.7354 33.0001 13.6426 33H15.833Z" />
+            <path class="icon-sub" d="M33.3574 33C34.2646 33.0001 35 33.6717 35 34.5C35 35.3283 34.2646 35.9999 33.3574 36H31.167C30.2597 36 29.5234 35.3284 29.5234 34.5C29.5234 33.6716 30.2597 33 31.167 33H33.3574Z" />
+            <path class="icon-sub" d="M30.6152 13C32.3151 13.0001 33.8293 14.0751 34.3906 15.6797L35.79 19.6797C35.9449 20.1226 36.0156 20.569 36.0156 21.0049C36.056 21.0022 36.0966 21 36.1377 21H38.3447C39.2589 21 40 21.6716 40 22.5C40 23.3284 39.2589 24 38.3447 24H36.1377C35.7142 23.9999 35.3289 23.8543 35.0361 23.6172C34.314 24.453 33.2473 25 32.0137 25H16.0039C14.7656 25 13.6948 24.4496 12.9727 23.6084C12.6788 23.8502 12.2905 23.9999 11.8623 24H9.65527C8.74115 24 8 23.3284 8 22.5C8 21.6716 8.74115 21 9.65527 21H11.8623C11.9094 21 11.9559 21.0024 12.002 21.0059C12.0019 20.5697 12.0725 20.1229 12.2275 19.6797L13.627 15.6797C14.1882 14.0751 15.7025 13.0002 17.4023 13H30.6152Z" />
+            <path class="icon-main" d="M34 22.3633C36.209 22.3633 37.9998 24.1543 38 26.3633V30.3633C38 32.5724 36.2091 34.3633 34 34.3633H13.6367C11.4276 34.3633 9.63672 32.5724 9.63672 30.3633V26.3633C9.63692 24.1543 11.4277 22.3633 13.6367 22.3633H34ZM16.1816 27.2725C15.278 27.2725 14.5459 28.0055 14.5459 28.9092C14.546 29.8128 15.278 30.5458 16.1816 30.5459H18.3633C19.267 30.5459 19.9999 29.8129 20 28.9092C20 28.0054 19.267 27.2725 18.3633 27.2725H16.1816ZM29.2725 27.2725C28.3688 27.2726 27.6367 28.0055 27.6367 28.9092C27.6368 29.8128 28.3689 30.5458 29.2725 30.5459H31.4541C32.3578 30.5459 33.0908 29.8129 33.0908 28.9092C33.0908 28.0054 32.3578 27.2725 31.4541 27.2725H29.2725Z" />
+            <path class="icon-main" d="M27.2656 13.0723C28.3902 14.8189 28.2056 17.2013 26.8281 18.7139C25.2661 20.4287 22.7339 20.4287 21.1719 18.7139C19.7944 17.2013 19.6098 14.8189 20.7344 13.0723L24 8L27.2656 13.0723Z" />
+          </svg>
+          <div class="icon-label">洗车</div>
+          <div class="icon-class">s1 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-3" id="svg-advisor-s1">
+            <rect class="icon-bg" width="48" height="48" rx="12" />
+<path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-main" d="M24 8C28.4183 8 32 11.5817 32 16C32 19.013 30.3337 21.6356 27.873 23H27.8887C33.4728 23.0001 37.9999 27.5272 38 33.1113C37.9998 35.2588 36.2588 36.9998 34.1113 37H13.8887C11.7412 36.9998 10.0002 35.2588 10 33.1113C10.0001 27.5272 14.5272 23.0001 20.1113 23H20.127C17.6663 21.6356 16 19.013 16 16C16 11.5817 19.5817 8 24 8ZM25.6338 28.833C25.3761 28.833 25.167 29.043 25.167 29.3008V30.6992C25.167 30.957 25.3761 31.167 25.6338 31.167H32.167V29.3008C32.167 29.043 31.957 28.833 31.6992 28.833H25.6338Z" />
+          </svg>
+          <div class="icon-label">顾问</div>
+          <div class="icon-class">s1 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-1" id="svg-calc-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path
+              d="M35 11C37.2091 11 38.9999 12.7909 39 15V32.3848C39 34.5939 37.2091 36.3848 35 36.3848H13C10.7909 36.3848 9 34.5939 9 32.3848V15C9.00007 12.7909 10.7909 11 13 11H35ZM29.6641 16.5469C28.9038 15.9676 27.8176 16.1138 27.2383 16.874L18.0078 28.9893C17.4288 29.7496 17.5757 30.8368 18.3359 31.416C19.0962 31.9947 20.1825 31.8478 20.7617 31.0879L29.9922 18.9727C30.5714 18.2124 30.4242 17.1262 29.6641 16.5469ZM27.4619 27.2695C26.8884 27.2695 26.4229 27.7351 26.4229 28.3086C26.4233 28.8817 26.8887 29.3467 27.4619 29.3467H32.0771C32.6503 29.3466 33.1157 28.8817 33.1162 28.3086C33.1162 27.7351 32.6506 27.2696 32.0771 27.2695H27.4619ZM17.0771 16.8848C16.5036 16.8848 16.0381 17.3503 16.0381 17.9238V19.1924H14.7695C14.196 19.1924 13.7305 19.6579 13.7305 20.2314C13.7308 20.8047 14.1962 21.2705 14.7695 21.2705H16.0381V22.5391C16.0385 23.1123 16.5039 23.5781 17.0771 23.5781C17.6503 23.578 18.1158 23.1122 18.1162 22.5391V21.2705H19.3848C19.958 21.2704 20.4235 20.8046 20.4238 20.2314C20.4238 19.658 19.9582 19.1925 19.3848 19.1924H18.1162V17.9238C18.1162 17.3504 17.6506 16.8849 17.0771 16.8848Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">计算</div>
+          <div class="icon-class">s1 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-1" id="svg-ins-s1">
+            <rect class="icon-bg" width="48" height="48" rx="12" />
+<path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-main" d="M24 19.6656C25.8777 19.6656 27.4003 21.1883 27.4004 23.066C27.4004 24.9438 25.8778 26.4664 24 26.4664C22.1222 26.4664 20.5996 24.9438 20.5996 23.066C20.5997 21.1883 22.1223 19.6656 24 19.6656Z" />
+<path class="icon-main"  d="M23.041 9.47423C23.86 9.2091 24.7433 9.21524 25.5586 9.49181L34.2852 12.4527C35.9082 13.0034 37 14.527 37 16.2408V27.8424C36.9999 28.4454 36.8674 29.0454 36.584 29.5777C34.0224 34.3894 30.6338 36.5532 25.8467 38.8424C24.864 39.3123 23.7257 39.347 22.7197 38.9293C17.6165 36.8103 14.0364 34.5796 11.4062 29.5699C11.1293 29.0423 11 28.449 11 27.8531V16.2828C11.0001 14.5486 12.1176 13.0115 13.7676 12.4772L23.041 9.47423ZM24 17.066C20.6863 17.066 18.0001 19.7524 18 23.066C18 26.3797 20.6863 29.066 24 29.066C25.3379 29.066 26.5725 28.6266 27.5703 27.8863L29.6875 29.5807C30.248 30.0291 31.0661 29.9387 31.5146 29.3785C31.963 28.8181 31.8727 28 31.3125 27.5514L29.2764 25.9225C29.7372 25.073 30 24.1003 30 23.066C29.9999 19.7524 27.3137 17.066 24 17.066Z" />
+          </svg>
+          <div class="icon-label">保险</div>
+          <div class="icon-class">s1 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-2" id="svg-mall-s1">
+            <rect class="icon-bg" width="48" height="48" rx="12" />
+<path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-main" d="M32.1582 10C34.5716 10 36.5732 11.9006 36.7376 14.3488L37.9892 33.0155C38.1699 35.7113 36.0682 37.9997 33.4109 38H15.5898C12.9733 38 10.886 35.7792 11.0048 33.1214L11.8396 14.4548C11.951 11.9626 13.97 10.0003 16.4234 10H32.1582ZM30.5369 15.5041C29.7249 15.3666 28.9563 15.9239 28.8203 16.7493V16.7471L28.8215 16.7437C28.8218 16.7416 28.8223 16.7396 28.8226 16.738C28.8231 16.7348 28.8233 16.7319 28.8237 16.73L28.8147 16.7664C28.8028 16.8129 28.7792 16.8942 28.7397 16.9977C28.6593 17.2076 28.5186 17.4939 28.2847 17.7793C27.8587 18.2989 26.9922 18.9836 25.1284 18.9836C23.2645 18.9835 22.3979 18.2989 21.972 17.7793C21.7381 17.4939 21.5974 17.2076 21.5171 16.9977C21.4775 16.8942 21.454 16.8128 21.442 16.7664L21.4331 16.73C21.4334 16.7319 21.4336 16.7347 21.4342 16.738C21.4345 16.7397 21.4349 16.7416 21.4353 16.7437C21.4355 16.7447 21.4362 16.7459 21.4364 16.7471V16.7493C21.3004 15.9238 20.532 15.3664 19.7199 15.5041C18.9076 15.642 18.3587 16.4234 18.4941 17.2495L19.9652 17C18.4943 17.2493 18.4939 17.2508 18.4941 17.2518C18.4943 17.2531 18.4949 17.256 18.4952 17.2575C18.4957 17.2605 18.4968 17.2643 18.4974 17.2677C18.4986 17.2745 18.4992 17.2822 18.5008 17.2905C18.504 17.3077 18.5082 17.3283 18.5131 17.3521C18.5231 17.4 18.537 17.4618 18.5557 17.5343C18.593 17.6793 18.6504 17.872 18.7361 18.096C18.9067 18.5423 19.1968 19.1316 19.6795 19.7207C20.6878 20.951 22.4036 22.0164 25.1284 22.0164C27.8532 22.0164 29.5689 20.951 30.5772 19.7207C31.06 19.1316 31.35 18.5423 31.5207 18.096C31.6063 17.8721 31.6637 17.6793 31.7011 17.5343C31.7197 17.4618 31.7337 17.4 31.7436 17.3521C31.7486 17.3283 31.7528 17.3076 31.756 17.2905C31.7575 17.2822 31.7582 17.2744 31.7593 17.2677C31.7599 17.2643 31.7611 17.2605 31.7616 17.2575C31.7618 17.2561 31.7625 17.2543 31.7627 17.2529C31.759 17.2513 31.686 17.2363 30.2915 17L31.7627 17.2495C31.8981 16.4233 31.3494 15.6419 30.5369 15.5041Z" />
+          </svg>
+          <div class="icon-label">商城</div>
+          <div class="icon-class">s1 · grad-2</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-3" id="svg-points-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-main" d="M26.7742 24.2794L24 27.0548L21.2258 24.2794L24 21.5053L26.7742 24.2794Z" />
+<path class="icon-main"  d="M24 9C32.2843 9 39 15.7157 39 24C39 32.2843 32.2843 39 24 39C15.7157 39 9 32.2843 9 24C9 15.7157 15.7157 9 24 9ZM25.0603 18.3243C24.4745 17.7385 23.5255 17.7385 22.9397 18.3243L18.0437 23.2191C17.458 23.8049 17.458 24.7551 18.0437 25.3409L22.9397 30.2357C23.5254 30.8214 24.4746 30.8214 25.0603 30.2357L29.9563 25.3409C30.542 24.7551 30.542 23.8049 29.9563 23.2191L25.0603 18.3243Z" />
+          </svg>
+          <div class="icon-label">积分</div>
+          <div class="icon-class">s1 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s1 grad-1" id="svg-bundle-s1">
+            <rect width="48" height="48" rx="12" class="icon-bg" />
+            <path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-sub" d="M17.5791 11.0933C18.5255 10.0741 20.0482 9.83864 21.2578 10.525L26.5 13.4996L21.0166 17.2964C20.3545 17.7548 19.569 18.0025 18.7637 18.0074L11.1152 18.0543L17.5791 11.0933Z" />
+<path class="icon-sub" d="M28.7275 12.1597C30.0129 11.2761 31.7612 11.5248 32.749 12.732L36.5947 17.4322H21.0586L28.7275 12.1597Z" />
+<path class="icon-main" d="M34.5385 16C37.0025 16 39 17.9794 39 20.4211V32.5789C39 35.0206 37.0025 37 34.5385 37H14.4615C11.9975 37 10 35.0206 10 32.5789V20.4211C10 17.9794 11.9975 16 14.4615 16H34.5385ZM28.9615 22.3002C28.1607 22.3002 27.5118 22.9433 27.5118 23.7368C27.5118 25.385 26.1632 26.7213 24.5 26.7213C22.8368 26.7213 21.4882 25.385 21.4882 23.7368C21.4882 22.9433 20.8393 22.3002 20.0385 22.3002C19.2376 22.3002 18.5887 22.9433 18.5887 23.7368C18.5887 26.9721 21.2351 29.5945 24.5 29.5945C27.7649 29.5945 30.4113 26.9721 30.4113 23.7368C30.4113 22.9433 29.7624 22.3002 28.9615 22.3002Z" />
+          </svg>
+          <div class="icon-label">套餐</div>
+          <div class="icon-class">s1 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">
+        风格2：渐变背景 + 渐变图标
+        <span class="badge">s2 · 48×48</span>
+      </div>
+      <div class="icons-grid">
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-1" id="svg-service-s2">
+            <path
+              d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"
+              class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <rect x="14" y="9" width="7" height="11" rx="3.5" class="icon-sub" />
+            <rect x="27" y="9" width="6" height="11" rx="3" class="icon-sub" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M34.625 14C37.0412 14 39 15.9699 39 18.4V31.6C39 34.0301 37.0412 36 34.625 36H13.375C10.9588 36 9 34.0301 9 31.6V18.4C9 15.9699 10.9588 14 13.375 14H34.625ZM29.3729 20.9622C28.7089 20.408 27.7237 20.5001 27.1726 21.1678L23.1156 26.0847L21.3883 24.2376C20.7971 23.6054 19.8081 23.575 19.1794 24.1695C18.5508 24.764 18.5205 25.7587 19.1117 26.391L22.0505 29.5338C22.3573 29.8619 22.7895 30.0419 23.2371 30.028C23.6847 30.014 24.1052 29.8074 24.3912 29.4608L29.5774 23.1751C30.1284 22.5072 30.0369 21.5164 29.3729 20.9622Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">维修保养</div>
+          <div class="icon-class">s2 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-2" id="svg-oil-s2">
+            <path
+              d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"
+              class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <path d="M22 9C22 7.89543 22.8954 7 24 7H28C29.1046 7 30 7.89543 30 9V12H22V9Z" class="icon-sub" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M33.038 12.1506C34.2678 13.0293 35 14.4657 35 15.998V32.3043C35 34.8977 32.9405 37 30.4 37H16.6C14.0595 37 12 34.8977 12 32.3043V20.2121C12 18.7069 12.7072 17.2927 13.9013 16.4095L22.5679 10H30.0271L33.038 12.1506ZM20.8788 22.7778C19.7162 24.4563 19.9075 26.7454 21.3314 28.1991C22.9463 29.8476 25.5642 29.8476 27.1791 28.1991C28.6032 26.7454 28.7944 24.4564 27.6317 22.7778L24.2558 17.9033L20.8788 22.7778Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">加油</div>
+          <div class="icon-class">s2 · grad-2</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-3" id="svg-rescue-s2">
+            <path
+              d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"
+              class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <path
+              d="M37.1296 33.2314C38.7149 33.2314 40 34.3507 40 35.7314C40 37.1122 38.7149 38.2314 37.1296 38.2314H11.8704C10.2851 38.2314 9 37.1122 9 35.7314C9 34.3507 10.2851 33.2314 11.8704 33.2314H37.1296Z"
+              class="icon-sub" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M24.4814 8.26855C30.8225 8.26855 35.9629 13.409 35.9629 19.75V31.2227C35.9627 31.2274 35.9589 31.2313 35.9541 31.2314H13.0088C13.004 31.2313 13.0002 31.2274 13 31.2227V19.75C13 13.409 18.1404 8.26855 24.4814 8.26855ZM25.9316 15.291C25.976 14.9008 25.4901 14.6869 25.2324 14.9834L20.2588 20.71C20.0784 20.918 20.1572 21.242 20.4131 21.3438L23.1641 22.4346C23.3475 22.5074 23.4503 22.7031 23.4062 22.8955L22.6211 26.3193C22.5295 26.7191 23.0277 26.9821 23.3057 26.6807L28.6533 20.8789C28.8502 20.6651 28.7604 20.3197 28.4844 20.2285L25.7891 19.3369C25.6091 19.2775 25.4951 19.1004 25.5166 18.9121L25.9316 15.291Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">救援</div>
+          <div class="icon-class">s2 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-1" id="svg-drive-s2">
+            <path
+              d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"
+              class="icon-bg" />
+            <path
+              d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z"
+              class="icon-shadow" />
+            <path
+              d="M16.8268 24.198C17.6668 26.953 20.0458 29.0327 22.9611 29.4373V36.9839C15.8937 36.4998 10.1721 31.1157 9.16001 24.198H16.8268Z"
+              class="icon-main" />
+            <path
+              d="M38.84 24.198C37.8279 31.1157 32.1063 36.4998 25.0389 36.9839V29.4373C27.9542 29.0327 30.3332 26.953 31.1732 24.198H38.84Z"
+              class="icon-main" />
+            <path
+              d="M24 6.98389C32.2843 6.98389 39 13.7079 39 22.0025C39 22.0409 38.9992 22.0793 38.9989 22.1176H31.4966C31.4972 22.0793 31.5 22.0409 31.5 22.0025C31.5 17.8552 28.1421 14.4932 24 14.4932C19.8579 14.4932 16.5 17.8552 16.5 22.0025C16.5 22.0409 16.5028 22.0793 16.5034 22.1176H9.00113C9.00084 22.0793 9 22.0409 9 22.0025C9 13.7079 15.7157 6.98389 24 6.98389Z"
+              class="icon-main" />
+            <path
+              d="M24 17.9839C26.2091 17.9839 28 19.7747 28 21.9839C28 24.193 26.2091 25.9839 24 25.9839C21.7909 25.9839 20 24.193 20 21.9839C20 19.7747 21.7909 17.9839 24 17.9839Z"
+              class="icon-sub" />
+          </svg>
+          <div class="icon-label">试驾</div>
+          <div class="icon-class">s2 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-1" id="svg-wash-s2">
+            <path
+              d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"
+              class="icon-bg" />
+              <path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+              <path class="icon-main" d="M15.833 33C16.7403 33 17.4766 33.6716 17.4766 34.5C17.4766 35.3284 16.7403 36 15.833 36H13.6426C12.7354 35.9999 12 35.3283 12 34.5C12 33.6717 12.7354 33.0001 13.6426 33H15.833Z" />
+              <path class="icon-main" d="M33.3574 33C34.2646 33.0001 35 33.6717 35 34.5C35 35.3283 34.2646 35.9999 33.3574 36H31.167C30.2597 36 29.5234 35.3284 29.5234 34.5C29.5234 33.6716 30.2597 33 31.167 33H33.3574Z" />
+              <path class="icon-main" d="M30.6152 13C32.3151 13.0001 33.8293 14.0751 34.3906 15.6797L35.79 19.6797C35.9449 20.1226 36.0156 20.569 36.0156 21.0049C36.056 21.0022 36.0966 21 36.1377 21H38.3447C39.2589 21 40 21.6716 40 22.5C40 23.3284 39.2589 24 38.3447 24H36.1377C35.7142 23.9999 35.3289 23.8543 35.0361 23.6172C34.314 24.453 33.2473 25 32.0137 25H16.0039C14.7656 25 13.6948 24.4496 12.9727 23.6084C12.6788 23.8502 12.2905 23.9999 11.8623 24H9.65527C8.74115 24 8 23.3284 8 22.5C8 21.6716 8.74115 21 9.65527 21H11.8623C11.9094 21 11.9559 21.0024 12.002 21.0059C12.0019 20.5697 12.0725 20.1229 12.2275 19.6797L13.627 15.6797C14.1882 14.0751 15.7025 13.0002 17.4023 13H30.6152Z" />
+              <path class="icon-main" d="M34 22.3633C36.209 22.3633 37.9998 24.1543 38 26.3633V30.3633C38 32.5724 36.2091 34.3633 34 34.3633H13.6367C11.4276 34.3633 9.63672 32.5724 9.63672 30.3633V26.3633C9.63692 24.1543 11.4277 22.3633 13.6367 22.3633H34ZM16.1816 27.2725C15.278 27.2725 14.5459 28.0055 14.5459 28.9092C14.546 29.8128 15.278 30.5458 16.1816 30.5459H18.3633C19.267 30.5459 19.9999 29.8129 20 28.9092C20 28.0054 19.267 27.2725 18.3633 27.2725H16.1816ZM29.2725 27.2725C28.3688 27.2726 27.6367 28.0055 27.6367 28.9092C27.6368 29.8128 28.3689 30.5458 29.2725 30.5459H31.4541C32.3578 30.5459 33.0908 29.8129 33.0908 28.9092C33.0908 28.0054 32.3578 27.2725 31.4541 27.2725H29.2725Z" />
+              <path class="icon-sub" d="M27.2656 13.0723C28.3902 14.8189 28.2056 17.2013 26.8281 18.7139C25.2661 20.4287 22.7339 20.4287 21.1719 18.7139C19.7944 17.2013 19.6098 14.8189 20.7344 13.0723L24 8L27.2656 13.0723Z" />
+          </svg>
+          <div class="icon-label">洗车</div>
+          <div class="icon-class">s2 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-3" id="svg-advisor-s2">
+            <path class="icon-bg" d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"  />
+            <path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+            <circle class="icon-main" cx="24" cy="16" r="8" />
+            <path  class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M27.8885 23C33.4727 23 38 27.5273 38 33.1115C37.9998 35.259 36.259 36.9998 34.1115 37H13.8885C11.741 36.9998 10.0002 35.259 10 33.1115C10 27.5273 14.5273 23 20.1115 23H27.8885ZM25.6338 28.8333C25.3761 28.8333 25.1667 29.0427 25.1667 29.3005V30.6995C25.1667 30.9573 25.3761 31.1667 25.6338 31.1667H32.1667V29.3005C32.1667 29.0427 31.9573 28.8333 31.6995 28.8333H25.6338Z"  />
+          </svg>
+          <div class="icon-label">顾问</div>
+          <div class="icon-class">s2 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-1" id="svg-calc-s2">
+            <path class="icon-bg" d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z" />
+<path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path  class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M35 10C37.2091 10 38.9999 11.7909 39 14V31.3848C39 33.5939 37.2091 35.3848 35 35.3848H13C10.7909 35.3848 9 33.5939 9 31.3848V14C9.00007 11.7909 10.7909 10 13 10H35ZM29.6641 15.5469C28.9038 14.9676 27.8176 15.1138 27.2383 15.874L18.0078 27.9893C17.4288 28.7496 17.5757 29.8368 18.3359 30.416C19.0962 30.9947 20.1825 30.8478 20.7617 30.0879L29.9922 17.9727C30.5714 17.2124 30.4242 16.1262 29.6641 15.5469ZM27.4619 26.2695C26.8884 26.2695 26.4229 26.7351 26.4229 27.3086C26.4233 27.8817 26.8887 28.3467 27.4619 28.3467H32.0771C32.6503 28.3466 33.1157 27.8817 33.1162 27.3086C33.1162 26.7351 32.6506 26.2696 32.0771 26.2695H27.4619ZM17.0771 15.8848C16.5036 15.8848 16.0381 16.3503 16.0381 16.9238V18.1924H14.7695C14.196 18.1924 13.7305 18.6579 13.7305 19.2314C13.7308 19.8047 14.1962 20.2705 14.7695 20.2705H16.0381V21.5391C16.0385 22.1123 16.5039 22.5781 17.0771 22.5781C17.6503 22.578 18.1158 22.1122 18.1162 21.5391V20.2705H19.3848C19.958 20.2704 20.4235 19.8046 20.4238 19.2314C20.4238 18.658 19.9582 18.1925 19.3848 18.1924H18.1162V16.9238C18.1162 16.3504 17.6506 15.8849 17.0771 15.8848Z"  />
+          </svg>
+          <div class="icon-label">计算</div>
+          <div class="icon-class">s2 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-1" id="svg-ins-s2">
+            <path class="icon-bg" d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z" />
+<path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-main" d="M24 19.5995C25.8777 19.5995 27.4003 21.1222 27.4004 22.9999C27.4004 24.8776 25.8778 26.4003 24 26.4003C22.1222 26.4003 20.5996 24.8776 20.5996 22.9999C20.5997 21.1222 22.1223 19.5995 24 19.5995Z" />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M23.041 9.40807C23.86 9.14294 24.7433 9.14908 25.5586 9.42565L34.2852 12.3866C35.9082 12.9372 37 14.4608 37 16.1747V27.7762C36.9999 28.3793 36.8674 28.9793 36.584 29.5116C34.0224 34.3232 30.6338 36.4871 25.8467 38.7762C24.864 39.2461 23.7257 39.2808 22.7197 38.8631C17.6165 36.7441 14.0364 34.5134 11.4062 29.5038C11.1293 28.9762 11 28.3829 11 27.787V16.2167C11.0001 14.4824 12.1176 12.9453 13.7676 12.411L23.041 9.40807ZM24 16.9999C20.6863 16.9999 18.0001 19.6862 18 22.9999C18 26.3136 20.6863 28.9999 24 28.9999C25.3379 28.9999 26.5725 28.5605 27.5703 27.8202L29.6875 29.5145C30.248 29.9629 31.0661 29.8726 31.5146 29.3124C31.963 28.7519 31.8727 27.9338 31.3125 27.4852L29.2764 25.8563C29.7372 25.0069 30 24.0342 30 22.9999C29.9999 19.6862 27.3137 16.9999 24 16.9999Z" />
+          </svg>
+          <div class="icon-label">保险</div>
+          <div class="icon-class">s2 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-2" id="svg-mall-s2">
+            <path class="icon-bg" d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"  />
+<path class="icon-shadow" d="M37 38.5C37 40.433 30.9558 42 23.5 42C16.0442 42 10 40.433 10 38.5C10 36.567 16.0442 35 23.5 35C30.9558 35 37 36.567 37 38.5Z"  />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M32.1582 10C34.5716 10 36.5732 11.9006 36.7376 14.3488L37.9892 33.0155C38.1699 35.7113 36.0682 37.9997 33.4109 38H15.5898C12.9733 38 10.886 35.7792 11.0048 33.1214L11.8396 14.4548C11.951 11.9626 13.97 10.0003 16.4234 10H32.1582ZM30.5369 15.5041C29.7249 15.3666 28.9563 15.9239 28.8203 16.7493V16.7471L28.8215 16.7437C28.8218 16.7416 28.8223 16.7396 28.8226 16.738C28.8231 16.7348 28.8233 16.7319 28.8237 16.73L28.8147 16.7664C28.8028 16.8129 28.7792 16.8942 28.7397 16.9977C28.6593 17.2076 28.5186 17.4939 28.2847 17.7793C27.8587 18.2989 26.9922 18.9836 25.1284 18.9836C23.2645 18.9835 22.3979 18.2989 21.972 17.7793C21.7381 17.4939 21.5974 17.2076 21.5171 16.9977C21.4775 16.8942 21.454 16.8128 21.442 16.7664L21.4331 16.73C21.4334 16.7319 21.4336 16.7347 21.4342 16.738C21.4345 16.7397 21.4349 16.7416 21.4353 16.7437C21.4355 16.7447 21.4362 16.7459 21.4364 16.7471V16.7493C21.3004 15.9238 20.532 15.3664 19.7199 15.5041C18.9076 15.642 18.3587 16.4234 18.4941 17.2495L19.9652 17C18.4943 17.2493 18.4939 17.2508 18.4941 17.2518C18.4943 17.2531 18.4949 17.256 18.4952 17.2575C18.4957 17.2605 18.4968 17.2643 18.4974 17.2677C18.4986 17.2745 18.4992 17.2822 18.5008 17.2905C18.504 17.3077 18.5082 17.3283 18.5131 17.3521C18.5231 17.4 18.537 17.4618 18.5557 17.5343C18.593 17.6793 18.6504 17.872 18.7361 18.096C18.9067 18.5423 19.1968 19.1316 19.6795 19.7207C20.6878 20.951 22.4036 22.0164 25.1284 22.0164C27.8532 22.0164 29.5689 20.951 30.5772 19.7207C31.06 19.1316 31.35 18.5423 31.5207 18.096C31.6063 17.8721 31.6637 17.6793 31.7011 17.5343C31.7197 17.4618 31.7337 17.4 31.7436 17.3521C31.7486 17.3283 31.7528 17.3076 31.756 17.2905C31.7575 17.2822 31.7582 17.2744 31.7593 17.2677C31.7599 17.2643 31.7611 17.2605 31.7616 17.2575C31.7618 17.2561 31.7625 17.2543 31.7627 17.2529C31.759 17.2513 31.686 17.2363 30.2915 17L31.7627 17.2495C31.8981 16.4233 31.3494 15.6419 30.5369 15.5041Z" />
+          </svg>
+          <div class="icon-label">商城</div>
+          <div class="icon-class">s2 · grad-2</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-3" id="svg-points-s2">
+            <path class="icon-bg" d="M0 24C0 12.6863 0 7.02944 3.51472 3.51472C7.02944 0 12.6863 0 24 0C35.3137 0 40.9706 0 44.4853 3.51472C48 7.02944 48 12.6863 48 24C48 35.3137 48 40.9706 44.4853 44.4853C40.9706 48 35.3137 48 24 48C12.6863 48 7.02944 48 3.51472 44.4853C0 40.9706 0 35.3137 0 24Z"  />
+<path class="icon-shadow" d="M37 37.5C37 39.433 30.9558 41 23.5 41C16.0442 41 10 39.433 10 37.5C10 35.567 16.0442 34 23.5 34C30.9558 34 37 35.567 37 37.5Z" />
+<path class="icon-main" d="M26.7742 24.2794L24 27.0548L21.2258 24.2794L24 21.5053L26.7742 24.2794Z"  />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M24 9C32.2843 9 39 15.7157 39 24C39 32.2843 32.2843 39 24 39C15.7157 39 9 32.2843 9 24C9 15.7157 15.7157 9 24 9ZM25.0603 18.3243C24.4745 17.7385 23.5255 17.7385 22.9397 18.3243L18.0437 23.2191C17.458 23.8049 17.458 24.7551 18.0437 25.3409L22.9397 30.2357C23.5254 30.8214 24.4746 30.8214 25.0603 30.2357L29.9563 25.3409C30.542 24.7551 30.542 23.8049 29.9563 23.2191L25.0603 18.3243Z"  />
+          </svg>
+          <div class="icon-label">积分</div>
+          <div class="icon-class">s2 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="48" height="48" viewBox="0 0 48 48" class="s2 grad-1" id="svg-bundle-s2">
+            <rect class="icon-bg" width="48" height="48" rx="12" />
+<path class="icon-shadow" d="M37 36.5C37 38.433 30.9558 40 23.5 40C16.0442 40 10 38.433 10 36.5C10 34.567 16.0442 33 23.5 33C30.9558 33 37 34.567 37 36.5Z" />
+<path class="icon-sub" d="M17.5596 11.1147C18.5151 10.0856 20.0566 9.85632 21.2695 10.5639L26.5596 13.6498L28.7275 12.1596C30.0129 11.2761 31.7612 11.5248 32.749 12.7319L36.5947 17.4321H21.8252C21.1873 17.836 20.4459 18.0541 19.6855 18.0541H11.1152L17.5596 11.1147Z" />
+<path class="icon-main"   fill-rule="evenodd" clip-rule="evenodd" d="M34.5385 16C37.0025 16 39 17.9794 39 20.4211V32.5789C39 35.0206 37.0025 37 34.5385 37H14.4615C11.9975 37 10 35.0206 10 32.5789V20.4211C10 17.9794 11.9975 16 14.4615 16H34.5385ZM28.9615 22.3002C28.1607 22.3002 27.5118 22.9433 27.5118 23.7368C27.5118 25.385 26.1632 26.7213 24.5 26.7213C22.8368 26.7213 21.4882 25.385 21.4882 23.7368C21.4882 22.9433 20.8393 22.3002 20.0385 22.3002C19.2376 22.3002 18.5887 22.9433 18.5887 23.7368C18.5887 26.9721 21.2351 29.5945 24.5 29.5945C27.7649 29.5945 30.4113 26.9721 30.4113 23.7368C30.4113 22.9433 29.7624 22.3002 28.9615 22.3002Z"  />
+          </svg>
+          <div class="icon-label">套餐</div>
+          <div class="icon-class">s2 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">
+        风格3：无背景渐变图标
+        <span class="badge">s3 · 32×32</span>
+      </div>
+      <div class="icons-grid">
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-1" id="svg-service-s3">
+            <rect x="8" y="4" width="5" height="8" rx="2.5" class="icon-sub" />
+            <rect x="19" y="4" width="5" height="8" rx="2.5" class="icon-sub" />
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M25.2083 8C27.3024 8 29 9.70132 29 11.8V23.2C29 25.2987 27.3024 27 25.2083 27H6.79167C4.69759 27 3 25.2987 3 23.2V11.8C3 9.70132 4.69759 8 6.79167 8H25.2083ZM20.6565 14.0128C20.081 13.5342 19.2272 13.6137 18.7496 14.1904L15.2335 18.4367L13.7365 16.8416C13.2242 16.2956 12.367 16.2693 11.8222 16.7827C11.2774 17.2962 11.2511 18.1553 11.7635 18.7013L14.3105 21.4156C14.5764 21.6989 14.9509 21.8543 15.3388 21.8423C15.7267 21.8302 16.0912 21.6518 16.3391 21.3525L20.8337 15.9239C21.3112 15.3471 21.232 14.4914 20.6565 14.0128Z"
+              class="icon-main" />
+          </svg>
+          <div class="icon-label">维修保养</div>
+          <div class="icon-class">s3 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-2" id="svg-oil-s3">
+            <path class="icon-main" d="M15 6C15 4.89543 15.8954 4 17 4H20C21.1046 4 22 4.89543 22 6V8H15V6Z" />
+<path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M24.2939 8.83203C25.3633 9.58054 26 10.8041 26 12.1094V26C26 28.2091 24.2091 30 22 30H10C7.79086 30 6 28.2091 6 26V15.6992C6.00003 14.417 6.61497 13.2123 7.65332 12.46L15.1895 7H21.6758L24.2939 8.83203ZM13.7207 17.8848C12.7098 19.3147 12.876 21.2646 14.1143 22.5029C15.5185 23.9072 17.7949 23.9072 19.1992 22.5029C20.4375 21.2646 20.6038 19.3147 19.5928 17.8848L16.6572 13.7324L13.7207 17.8848Z"  />
+          </svg>
+          <div class="icon-label">加油</div>
+          <div class="icon-class">s3 · grad-2</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-3" id="svg-rescue-s3">
+            <path class="icon-sub" d="M27 24.5C28.3807 24.5 29.5 25.6193 29.5 27C29.5 28.3807 28.3807 29.5 27 29.5H5C3.61929 29.5 2.5 28.3807 2.5 27C2.5 25.6193 3.61929 24.5 5 24.5H27Z"  />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M16 3C21.5228 3 26 7.47715 26 13V22.9922C25.9999 22.9965 25.9965 22.9999 25.9922 23H6.00781C6.00354 22.9999 6.0001 22.9965 6 22.9922V13C6 7.47715 10.4772 3 16 3ZM17.2441 9.28223C17.2889 8.89172 16.8027 8.67786 16.5449 8.97461L12.3701 13.7812C12.1896 13.9894 12.2684 14.3134 12.5244 14.415L14.8115 15.3213C14.9951 15.3941 15.0978 15.5907 15.0537 15.7832L14.4229 18.5332C14.3318 18.9326 14.8295 19.1948 15.1074 18.8936L19.5791 14.042C19.776 13.8283 19.6869 13.483 19.4111 13.3916L17.1787 12.6543C16.9988 12.5948 16.8847 12.4168 16.9062 12.2285L17.2441 9.28223Z"  />
+          </svg>
+          <div class="icon-label">救援</div>
+          <div class="icon-class">s3 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-1" id="svg-drive-s3">
+            <path class="icon-main" d="M9.7832 17.9004C10.5113 20.2851 12.573 22.0853 15.0996 22.4355V28.9678C8.97454 28.5487 4.01581 23.8883 3.13867 17.9004H9.7832Z" />
+<path class="icon-main" d="M28.8613 17.9004C27.9842 23.8883 23.0255 28.5487 16.9004 28.9678V22.4355C19.427 22.0853 21.4887 20.2851 22.2168 17.9004H28.8613Z"  />
+<path class="icon-main" d="M16 3C23.1797 3 29 8.8203 29 16C29 16.0332 28.9993 16.0664 28.999 16.0996H22.4971C22.4976 16.0665 22.5 16.0333 22.5 16C22.5 12.4101 19.5899 9.5 16 9.5C12.4101 9.5 9.5 12.4101 9.5 16C9.5 16.0333 9.50243 16.0665 9.50293 16.0996H3.00098C3.00073 16.0664 3 16.0332 3 16C3 8.8203 8.8203 3 16 3Z"  />
+<path class="icon-sub" d="M16 12.5C17.933 12.5 19.5 14.067 19.5 16C19.5 17.933 17.933 19.5 16 19.5C14.067 19.5 12.5 17.933 12.5 16C12.5 14.067 14.067 12.5 16 12.5Z"  />
+          </svg>
+          <div class="icon-label">试驾</div>
+          <div class="icon-class">s3 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-1" id="svg-wash-s3">
+            <path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M11.8633 5C10.5194 7.02977 10.766 9.75788 12.4648 11.499C14.4174 13.5002 17.5835 13.5002 19.5361 11.499C21.2347 9.75794 21.4813 7.02964 20.1377 5H22.1172C23.8389 5.00002 25.3677 6.102 25.9121 7.73535L27.2451 11.7354C27.4434 12.3303 27.4931 12.9296 27.4209 13.5H29C29.8284 13.5 30.5 14.1716 30.5 15C30.5 15.8284 29.8284 16.5 29 16.5H28.1211C28.6704 17.1849 29 18.0537 29 19V22C29 23.6888 27.9526 25.1311 26.4727 25.7178C26.4901 25.8092 26.5 25.9035 26.5 26C26.5 26.8284 25.8284 27.5 25 27.5H23C22.1716 27.5 21.5 26.8284 21.5 26H10.5C10.5 26.8284 9.82843 27.5 9 27.5H7C6.17157 27.5 5.5 26.8284 5.5 26C5.5 25.9035 5.50897 25.8092 5.52637 25.7178C4.04687 25.1308 3 23.6885 3 22V19C3 18.0537 3.32958 17.1849 3.87891 16.5H3C2.17157 16.5 1.5 15.8284 1.5 15C1.5 14.1716 2.17157 13.5 3 13.5H4.5791C4.50691 12.9296 4.55662 12.3303 4.75488 11.7354L6.08887 7.73535C6.63328 6.10213 8.16128 5.00019 9.88281 5H11.8633ZM9 19.5C8.17157 19.5 7.5 20.1716 7.5 21C7.5 21.8284 8.17157 22.5 9 22.5H11C11.8284 22.5 12.5 21.8284 12.5 21C12.5 20.1716 11.8284 19.5 11 19.5H9ZM21 19.5C20.1716 19.5 19.5 20.1716 19.5 21C19.5 21.8284 20.1716 22.5 21 22.5H23C23.8284 22.5 24.5 21.8284 24.5 21C24.5 20.1716 23.8284 19.5 23 19.5H21Z" />
+            <path class="icon-sub" d="M16 0L19.266 5.0718C20.3907 6.81846 20.2059 9.20088 18.8284 10.7135C17.2663 12.4288 14.7337 12.4288 13.1716 10.7135C11.7941 9.20088 11.6093 6.81847 12.7341 5.07181L16 0Z" />
+          </svg>
+          <div class="icon-label">洗车</div>
+          <div class="icon-class">s3 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-3" id="svg-advisor-s3">
+            <circle class="icon-main" cx="16" cy="11" r="7" />
+<path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M19.333 17C24.1195 17 28 20.8805 28 25.667C27.9998 27.5077 26.5077 28.9998 24.667 29H7.33301C5.49232 28.9998 4.00018 27.5077 4 25.667C4 20.8805 7.88052 17 12.667 17H19.333ZM17.4004 22C17.1795 22 17 22.1795 17 22.4004V23.5996C17 23.8205 17.1795 24 17.4004 24H23V22.4004C23 22.1795 22.8205 22 22.5996 22H17.4004Z" />
+          </svg>
+          <div class="icon-label">顾问</div>
+          <div class="icon-class">s3 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-1" id="svg-calc-s3">
+            <path class="icon-sub" d="M4 8C4 5.79086 5.79086 4 8 4H24C26.2091 4 28 5.79086 28 8H4Z"  />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M25 6C27.2091 6 29 7.79086 29 10V24C29 26.2091 27.2091 28 25 28H7C4.79086 28 3 26.2091 3 24V10C3 7.79086 4.79086 6 7 6H25ZM20.9092 10.8066C20.2503 10.3047 19.3087 10.432 18.8066 11.0908L10.8066 21.5908C10.3047 22.2497 10.432 23.1913 11.0908 23.6934C11.7497 24.1953 12.6913 24.068 13.1934 23.4092L21.1934 12.9092C21.6952 12.2502 21.568 11.3087 20.9092 10.8066ZM19 20.0996C18.503 20.0996 18.0997 20.5031 18.0996 21C18.0997 21.497 18.503 21.9004 19 21.9004H23C23.497 21.9004 23.9003 21.497 23.9004 21C23.9003 20.5031 23.497 20.0996 23 20.0996H19ZM10 11.0996C9.50302 11.0996 9.09974 11.5031 9.09961 12V13.0996H8C7.50302 13.0996 7.09974 13.5031 7.09961 14C7.09967 14.497 7.50298 14.9004 8 14.9004H9.09961V16C9.09967 16.497 9.50298 16.9004 10 16.9004C10.497 16.9004 10.9003 16.497 10.9004 16V14.9004H12C12.497 14.9004 12.9003 14.497 12.9004 14C12.9003 13.5031 12.497 13.0996 12 13.0996H10.9004V12C10.9003 11.5031 10.497 11.0996 10 11.0996Z" />
+          </svg>
+          <div class="icon-label">计算</div>
+          <div class="icon-class">s3 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-1" id="svg-ins-s3">
+            <path class="icon-sub" d="M25.2939 5.74707C26.9124 6.30036 28 7.82175 28 9.53223V18.876C28 19.4752 27.8705 20.0717 27.5869 20.5996C26.5633 22.5053 24.3839 23.8347 23 25L22 5L25.2939 5.74707Z" fill="#45DAD1"/>
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M16 11.7998C17.7673 11.7998 19.2002 13.2327 19.2002 15C19.2002 16.7673 17.7673 18.2002 16 18.2002C14.2327 18.2002 12.7998 16.7673 12.7998 15C12.7998 13.2327 14.2327 11.7998 16 11.7998Z"  />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M14.9854 3.41403C15.8095 3.14515 16.6992 3.15135 17.5195 3.43161L24.2939 5.74704C25.9124 6.30032 27 7.82172 27 9.53219V18.8759C27 19.4752 26.8705 20.0716 26.5869 20.5996C24.4712 24.5384 21.6929 26.3736 17.8096 28.2636C16.8234 28.7436 15.6737 28.779 14.6641 28.3506C10.5179 26.5912 7.57935 24.6999 5.40332 20.5918C5.12624 20.0686 5 19.4796 5 18.8877V9.57419C5.00017 7.84321 6.11412 6.30833 7.75977 5.77145L14.9854 3.41403ZM16 9.99997C13.2386 9.99997 11 12.2385 11 15C11 17.7614 13.2386 20 16 20C17.2001 20 18.3013 19.5769 19.1631 18.872L20.96 20.2197C21.3575 20.5179 21.9215 20.4375 22.2197 20.04C22.5179 19.6424 22.4375 19.0785 22.04 18.7802L20.3301 17.498C20.7551 16.7628 21 15.9102 21 15C21 12.2385 18.7614 9.99997 16 9.99997Z"  />
+          </svg>
+          <div class="icon-label">保险</div>
+          <div class="icon-class">s3 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-2" id="svg-mall-s3">
+            <path class="icon-sub" d="M23.3193 4C25.3997 4 27.1329 5.5948 27.3057 7.66797L28.6387 23.668C28.8329 25.9998 26.9932 27.9997 24.6533 28H23V4H23.3193Z"  />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M22.6266 4C24.7301 4 26.4746 5.62905 26.6179 7.72754L27.7087 23.7275C27.8662 26.0383 26.0345 27.9997 23.7184 28H8.18622C5.90579 28 4.08658 26.0964 4.19012 23.8184L4.91766 7.81836C5.01477 5.68221 6.77448 4.00023 8.91278 4H22.6266ZM21.2136 8.71777C20.5058 8.59995 19.836 9.07764 19.7175 9.78516V9.7832L19.7184 9.78027C19.7187 9.77852 19.7192 9.77684 19.7194 9.77539C19.7199 9.77265 19.7201 9.77024 19.7204 9.76855L19.7126 9.7998C19.7022 9.83959 19.6816 9.90935 19.6472 9.99805C19.5771 10.1779 19.4545 10.4234 19.2507 10.668C18.8794 11.1133 18.1242 11.7002 16.4997 11.7002C14.8752 11.7001 14.1199 11.1133 13.7487 10.668C13.5449 10.4233 13.4222 10.1779 13.3522 9.99805C13.3177 9.90929 13.2972 9.83956 13.2868 9.7998L13.279 9.76855C13.2793 9.77024 13.2795 9.7726 13.28 9.77539C13.2802 9.77687 13.2806 9.77848 13.2809 9.78027C13.2811 9.78119 13.2818 9.78221 13.2819 9.7832V9.78516C13.1634 9.07756 12.4937 8.5998 11.7858 8.71777C11.0779 8.836 10.5995 9.5058 10.7175 10.2139L11.9997 10C10.7176 10.2137 10.7173 10.215 10.7175 10.2158C10.7177 10.217 10.7182 10.2195 10.7184 10.2207C10.7189 10.2233 10.7199 10.2266 10.7204 10.2295C10.7214 10.2352 10.722 10.2418 10.7233 10.249C10.7261 10.2637 10.7298 10.2814 10.7341 10.3018C10.7427 10.3429 10.7549 10.3958 10.7712 10.458C10.8037 10.5822 10.8538 10.7474 10.9284 10.9395C11.0771 11.3219 11.3299 11.8271 11.7507 12.332C12.6295 13.3866 14.1249 14.2997 16.4997 14.2998C18.8746 14.2998 20.3699 13.3866 21.2487 12.332C21.6694 11.8271 21.9222 11.3219 22.071 10.9395C22.1456 10.7475 22.1957 10.5822 22.2282 10.458C22.2445 10.3959 22.2566 10.3428 22.2653 10.3018C22.2696 10.2814 22.2733 10.2637 22.2761 10.249C22.2774 10.2419 22.278 10.2352 22.279 10.2295C22.2795 10.2266 22.2805 10.2232 22.2809 10.2207C22.2812 10.2195 22.2817 10.2179 22.2819 10.2168C22.2787 10.2154 22.2151 10.2026 20.9997 10L22.2819 10.2139C22.3999 9.50572 21.9217 8.83588 21.2136 8.71777Z"  />
+          </svg>
+          <div class="icon-label">商城</div>
+          <div class="icon-class">s3 · grad-2</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-3" id="svg-points-s3">
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M16.9999 3C24.1796 3 29.9999 8.8203 29.9999 16C29.9999 23.1797 24.1796 29 16.9999 29C9.82024 29 26 23.1797 26 16C26 8.8203 9.82024 3 16.9999 3Z" />
+            <path class="icon-main" d="M18.4043 16.2422L16 18.6475L13.5957 16.2422L16 13.8379L18.4043 16.2422Z" />
+            <path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29C8.8203 29 3 23.1797 3 16C3 8.8203 8.8203 3 16 3ZM16.9189 11.0811C16.4113 10.5734 15.5887 10.5734 15.0811 11.0811L10.8379 15.3232C10.3303 15.8309 10.3302 16.6544 10.8379 17.1621L15.0811 21.4043C15.5887 21.9119 16.4113 21.9119 16.9189 21.4043L21.1621 17.1621C21.6698 16.6544 21.6697 15.8309 21.1621 15.3232L16.9189 11.0811Z" />
+          </svg>
+          <div class="icon-label">积分</div>
+          <div class="icon-class">s3 · grad-3</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s3 grad-1" id="svg-bundle-s3">
+            <path class="icon-sub" d="M9.6084 4.97438C10.5639 3.94534 12.1054 3.717 13.3184 4.42458L17.8457 7.0652L19.5547 5.89137C20.8401 5.00767 22.5884 5.25646 23.5762 6.46364L26.8438 10.4568H13.5713C12.9586 10.818 12.2594 11.0134 11.542 11.0134H4L9.6084 4.97438Z" />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M25 9C27.2091 9 29 10.7909 29 13V24C29 26.2091 27.2091 28 25 28H7C4.79086 28 3 26.2091 3 24V13C3 10.7909 4.79086 9 7 9H25ZM20 14.7002C19.282 14.7002 18.7002 15.282 18.7002 16C18.7002 17.4912 17.4912 18.7002 16 18.7002C14.5088 18.7002 13.2998 17.4912 13.2998 16C13.2998 15.282 12.718 14.7002 12 14.7002C11.282 14.7002 10.7002 15.282 10.7002 16C10.7002 18.9271 13.0729 21.2998 16 21.2998C18.9271 21.2998 21.2998 18.9271 21.2998 16C21.2998 15.282 20.718 14.7002 20 14.7002Z" />
+          </svg>
+          <div class="icon-label">套餐</div>
+          <div class="icon-class">s3 · grad-1</div>
+          <div class="grad-bar">
+            <button class="grad-btn grad-prev" onclick="prevGrad(this)">‹</button>
+            <button class="grad-btn grad-next" onclick="nextGrad(this)">›</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section">
+      <div class="section-title">
+        风格4：描边 + 渐变强调
+        <span class="badge">s4 · 32×32 · 固定grad-1</span>
+      </div>
+      <div class="icons-grid">
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-service-s4">
+            <path class="icon-main"
+              d="M19.3545 14.0312C19.8895 13.3989 20.8363 13.3196 21.4688 13.8544C22.1011 14.3895 22.1803 15.3363 21.6455 15.9687L16.1455 22.4687C15.8746 22.7889 15.4816 22.9815 15.0625 22.999C14.6434 23.0164 14.2361 22.8571 13.9395 22.5605L10.9395 19.5605C10.3537 18.9747 10.3537 18.0252 10.9395 17.4394C11.5252 16.8536 12.4748 16.8536 13.0606 17.4394L14.9072 19.2861L19.3545 14.0312Z" />
+            <path class="icon-sub"
+                d="M21 6.09961C21.4971 6.09961 21.9004 6.50294 21.9004 7V8H25C27.2091 8 29 9.79086 29 12V24C29 26.2091 27.2091 28 25 28H7L6.79395 27.9951C4.68056 27.8879 3 26.14 3 24V12C3 9.79086 4.79086 8 7 8H10.0996V7C10.0996 6.50294 10.5029 6.09961 11 6.09961C11.4971 6.09961 11.9004 6.50294 11.9004 7V8H20.0996V7C20.0996 6.50294 20.5029 6.09961 21 6.09961ZM7 9.7998C5.78497 9.7998 4.7998 10.785 4.7998 12V24C4.7998 25.215 5.78497 26.2002 7 26.2002H25C26.215 26.2002 27.2002 25.215 27.2002 24V12C27.2002 10.785 26.215 9.7998 25 9.7998H21.9004V10C21.9004 10.4971 21.4971 10.9004 21 10.9004C20.5029 10.9004 20.0996 10.4971 20.0996 10V9.7998H11.9004V10C11.9004 10.4971 11.4971 10.9004 11 10.9004C10.5029 10.9004 10.0996 10.4971 10.0996 10V9.7998H7Z" />
+          </svg>
+          <div class="icon-label">维修保养</div>
+          <div class="icon-class">s4 · grad-1</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-oil-s4">
+            <path class="icon-main" d="M16.6569 13.7323L19.5929 17.8845C20.604 19.3145 20.4379 21.2649 19.1995 22.5033C17.7953 23.9076 15.5185 23.9076 14.1142 22.5033C12.8758 21.2649 12.7097 19.3145 13.7208 17.8845L16.6569 13.7323Z" />
+<path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M21 3C22.1046 3 23 3.89543 23 5V7.92578L24.2939 8.83203C25.3633 9.58054 26 10.8041 26 12.1094V26C26 28.14 24.3194 29.8879 22.2061 29.9951L22 30H10L9.79395 29.9951C7.68056 29.8879 6 28.14 6 26V15.6992C6.00003 14.497 6.54061 13.3634 7.46387 12.6064L7.65332 12.46L14 7.86133V5C14 3.89543 14.8954 3 16 3H21ZM8.70898 13.918C8.13805 14.3317 7.79983 14.9941 7.7998 15.6992V26C7.7998 27.215 8.78497 28.2002 10 28.2002H22C23.215 28.2002 24.2002 27.215 24.2002 26V12.1094C24.2002 11.3915 23.8499 10.7183 23.2617 10.3066L21.1084 8.7998H15.7734L8.70898 13.918ZM16 4.7998C15.8895 4.7998 15.7998 4.88954 15.7998 5V6.2002H21.2002V5C21.2002 4.88954 21.1105 4.7998 21 4.7998H16Z" />
+          </svg>
+          <div class="icon-label">加油</div>
+          <div class="icon-class">s4 · grad-2</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-rescue-s4">
+            <path class="icon-sub" d="M27 27.0996C27.4971 27.0996 27.9004 27.5029 27.9004 28C27.9004 28.4971 27.4971 28.9004 27 28.9004H5C4.50294 28.9004 4.09961 28.4971 4.09961 28C4.09961 27.5029 4.50294 27.0996 5 27.0996H27Z" />
+<path class="icon-sub" d="M16.5 7.09961C21.6915 7.09961 25.9004 11.3085 25.9004 16.5V26H24.0996V16.5C24.0996 12.3026 20.6974 8.90039 16.5 8.90039C12.3026 8.90039 8.90039 12.3026 8.90039 16.5V26H7.09961V16.5C7.09961 11.3085 11.3085 7.09961 16.5 7.09961Z" />
+<path class="icon-main" d="M12.391 17.2908L17.2223 11.9346C17.4836 11.6449 17.9626 11.8624 17.9165 12.2498L17.5174 15.6029C17.4947 15.7934 17.6105 15.9731 17.7933 16.0313L20.3889 16.8573C20.6709 16.947 20.7612 17.3013 20.5565 17.5151L15.3673 22.9352C15.0853 23.2298 14.5948 22.9628 14.6893 22.5659L15.4406 19.4102C15.487 19.215 15.3816 19.0155 15.1941 18.9439L12.5453 17.9324C12.2827 17.8321 12.2027 17.4995 12.391 17.2908Z" />
+          </svg>
+          <div class="icon-label">救援</div>
+          <div class="icon-class">s4 · grad-3</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-drive-s4">
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29C8.8203 29 3 23.1797 3 16C3 8.8203 8.8203 3 16 3ZM16 4.7998C9.81441 4.7998 4.7998 9.81441 4.7998 16C4.7998 16.0332 4.80245 16.0664 4.80273 16.0996H11C11.4971 16.0996 11.9004 16.5029 11.9004 17C11.9004 17.4971 11.4971 17.9004 11 17.9004H4.96387C5.81724 22.8915 9.97017 26.752 15.0996 27.1602V21C15.0996 20.5029 15.5029 20.0996 16 20.0996C16.4971 20.0996 16.9004 20.5029 16.9004 21V27.1602C22.0302 26.7519 26.1842 22.891 27.0371 17.8994H20.957C20.46 17.8993 20.076 17.4965 20.0996 17C20.1233 16.5035 20.5459 16.1006 21.043 16.1006H27.1973C27.1976 16.0671 27.2002 16.0336 27.2002 16C27.2002 9.81441 22.1856 4.7998 16 4.7998Z" />
+<path class="icon-main" d="M19.5 16C19.5 14.067 17.933 12.5 16 12.5C14.067 12.5 12.5 14.067 12.5 16C12.5 17.933 14.067 19.5 16 19.5C17.933 19.5 19.5 17.933 19.5 16ZM22.5 16C22.5 19.5899 19.5899 22.5 16 22.5C12.4101 22.5 9.5 19.5899 9.5 16C9.5 12.4101 12.4101 9.5 16 9.5C19.5899 9.5 22.5 12.4101 22.5 16Z" />
+          </svg>
+          <div class="icon-label">试驾</div>
+          <div class="icon-class">s4 · grad-1</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-wash-s4">
+            <path class="icon-sub" d="M11 19.5C11.8284 19.5 12.5 20.1716 12.5 21C12.5 21.8284 11.8284 22.5 11 22.5H9C8.17157 22.5 7.5 21.8284 7.5 21C7.5 20.1716 8.17157 19.5 9 19.5H11Z" />
+            <path class="icon-sub" d="M23 19.5C23.8284 19.5 24.5 20.1716 24.5 21C24.5 21.8284 23.8284 22.5 23 22.5H21C20.1716 22.5 19.5 21.8284 19.5 21C19.5 20.1716 20.1716 19.5 21 19.5H23Z" />
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M22.4375 5.0127C24.026 5.13979 25.4017 6.20413 25.9121 7.73535L27.2451 11.7354C27.4434 12.3303 27.4931 12.9296 27.4209 13.5H29C29.8284 13.5 30.5 14.1716 30.5 15C30.5 15.8284 29.8284 16.5 29 16.5H28.1211C28.6704 17.1849 29 18.0537 29 19V22C29 23.6888 27.9526 25.1311 26.4727 25.7178C26.4901 25.8092 26.5 25.9035 26.5 26C26.5 26.8284 25.8284 27.5 25 27.5H23C22.1716 27.5 21.5 26.8284 21.5 26H10.5C10.5 26.8284 9.82843 27.5 9 27.5H7C6.17157 27.5 5.5 26.8284 5.5 26C5.5 25.9039 5.50908 25.8099 5.52637 25.7188C4.04674 25.1318 3 23.6886 3 22V19C3 18.0537 3.32958 17.1849 3.87891 16.5H3C2.17157 16.5 1.5 15.8284 1.5 15C1.5 14.1716 2.17157 13.5 3 13.5H4.5791C4.51683 13.0072 4.54557 12.493 4.68262 11.9785L4.75488 11.7354L6.08789 7.73535C6.63233 6.10206 8.16119 5.0001 9.88281 5H22.1172L22.4375 5.0127ZM7 16.7998C5.78497 16.7998 4.7998 17.785 4.7998 19V22C4.7998 23.215 5.78497 24.2002 7 24.2002H25C26.215 24.2002 27.2002 23.215 27.2002 22V19C27.2002 17.785 26.215 16.7998 25 16.7998H24.7051C24.3133 16.9285 23.8925 17 23.4502 17H8.5498L8.2959 16.9922C7.94617 16.9707 7.61169 16.9034 7.2959 16.7998H7ZM9.88281 6.7998C8.93596 6.7999 8.09533 7.40641 7.7959 8.30469L6.46289 12.3047C6.09329 13.4139 6.65448 14.5509 7.62988 15H24.3701C25.3455 14.5509 25.9067 13.4139 25.5371 12.3047L24.2041 8.30469C23.9047 7.40642 23.064 6.79992 22.1172 6.7998H9.88281Z" />
+            <path class="icon-main" d="M16.0711 1L19.7411 6.19028C21.005 7.97775 20.7974 10.4158 19.2494 11.9638C17.494 13.7192 14.648 13.7192 12.8926 11.9638C11.3447 10.4158 11.137 7.97775 12.4009 6.19029L16.0711 1Z" />
+          </svg>
+          <div class="icon-label">洗车</div>
+          <div class="icon-class">s4 · grad-1</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-advisor-s4">
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M16 4C19.866 4 23 7.13401 23 11C23 13.5518 21.6339 15.7836 19.5938 17.0068C24.2596 17.1448 28 20.9678 28 25.667L27.9961 25.8379C27.9099 27.5426 26.5426 28.9099 24.8379 28.9961L24.667 29H7.33301C5.54963 28.9998 4.09301 27.5992 4.00391 25.8379L4 25.667C4 21.0301 7.6415 17.2438 12.2207 17.0117L12.4053 17.0068C10.3655 15.7835 9 13.5515 9 11C9 7.13401 12.134 4 16 4ZM12.667 18.7998C8.87464 18.7998 5.7998 21.8746 5.7998 25.667C5.79998 26.5136 6.48643 27.2 7.33301 27.2002H24.667C25.5136 27.2 26.2 26.5136 26.2002 25.667C26.2002 21.8746 23.1254 18.7998 19.333 18.7998H12.667ZM16 5.7998C13.1281 5.7998 10.7998 8.12812 10.7998 11C10.7998 13.8719 13.1281 16.2002 16 16.2002C18.8719 16.2002 21.2002 13.8719 21.2002 11C21.2002 8.12812 18.8719 5.7998 16 5.7998Z" />
+            <path class="icon-main" d="M17 22.4C17 22.1791 17.1791 22 17.4 22H22.6C22.8209 22 23 22.1791 23 22.4V23.6C23 23.8209 22.8209 24 22.6 24H17.4C17.1791 24 17 23.8209 17 23.6V22.4Z" />
+          </svg>
+          <div class="icon-label">顾问</div>
+          <div class="icon-class">s4 · grad-3</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-calc-s4">
+            <path class="icon-main" d="M19.266 10.5121C19.7012 9.94109 20.5172 9.83092 21.0883 10.266C21.6593 10.7012 21.7695 11.5172 21.3344 12.0883L13.3344 22.5883C12.8992 23.1593 12.0832 23.2695 11.5121 22.8344C10.9411 22.3992 10.8309 21.5832 11.266 21.0121L19.266 10.5121Z" />
+<path class="icon-sub" d="M23 20.0996C23.4971 20.0996 23.9004 20.5029 23.9004 21C23.9004 21.4971 23.4971 21.9004 23 21.9004H19C18.5029 21.9004 18.0996 21.4971 18.0996 21C18.0996 20.5029 18.5029 20.0996 19 20.0996H23Z" />
+<path class="icon-sub" d="M10 11.0996C10.4971 11.0996 10.9004 11.5029 10.9004 12V13.0996H12C12.4971 13.0996 12.9004 13.5029 12.9004 14C12.9004 14.4971 12.4971 14.9004 12 14.9004H10.9004V16C10.9004 16.4971 10.4971 16.9004 10 16.9004C9.50294 16.9004 9.09961 16.4971 9.09961 16V14.9004H8C7.50294 14.9004 7.09961 14.4971 7.09961 14C7.09961 13.5029 7.50294 13.0996 8 13.0996H9.09961V12C9.09961 11.5029 9.50294 11.0996 10 11.0996Z" />
+<path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M25 6C27.2091 6 29 7.79086 29 10V24C29 26.2091 27.2091 28 25 28H7L6.79395 27.9951C4.68056 27.8879 3 26.14 3 24V10C3 7.79086 4.79086 6 7 6H25ZM7 7.7998C5.78497 7.7998 4.7998 8.78497 4.7998 10V24C4.7998 25.215 5.78497 26.2002 7 26.2002H25C26.215 26.2002 27.2002 25.215 27.2002 24V10C27.2002 8.78497 26.215 7.7998 25 7.7998H7Z" />
+          </svg>
+          <div class="icon-label">计算</div>
+          <div class="icon-class">s4 · grad-1</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-ins-s4">
+            <path class="icon-sub" d="M25.2002 19.8769V10.5322C25.2002 9.59148 24.602 8.75451 23.7119 8.45016L16.9375 6.13571C16.4863 5.98153 15.9973 5.97805 15.5439 6.12594L8.31738 8.48336C7.41252 8.77872 6.79999 9.62235 6.7998 10.5742V19.8877C6.7998 20.2287 6.87335 20.5209 6.99414 20.749C8.89833 24.3439 11.4123 26.0151 15.3672 27.6933C15.8915 27.9158 16.4971 27.9007 17.0215 27.6455C20.7617 25.8251 23.1463 24.2028 25.002 20.748C25.1256 20.5178 25.2001 20.2222 25.2002 19.8769ZM27 19.8769L26.9941 20.1006C26.9656 20.6234 26.8351 21.1375 26.5869 21.5996C24.4712 25.5384 21.6929 27.3736 17.8096 29.2636L17.6221 29.3486C16.7425 29.7197 15.753 29.7499 14.8555 29.4257L14.6641 29.3505C10.6475 27.6461 7.764 25.8181 5.60938 21.9707L5.40332 21.5918C5.12625 21.0686 5 20.4796 5 19.8877V10.5742C5.00017 8.95142 5.97876 7.50106 7.45703 6.88375L7.75977 6.77145L14.9854 4.41403C15.8095 4.14515 16.6992 4.15136 17.5195 4.43161L24.2939 6.74704C25.9125 7.30032 27 8.82171 27 10.5322V19.8769Z" />
+<path class="icon-main" fill-rule="evenodd" clip-rule="evenodd" d="M16 10.7002C18.9271 10.7002 21.2998 13.0729 21.2998 16C21.2998 16.7605 21.1381 17.4829 20.8496 18.1367L22.4004 19.2998C23.063 19.7969 23.1972 20.7377 22.7002 21.4004C22.2031 22.063 21.2623 22.1972 20.5996 21.7002L18.9062 20.4297C18.0715 20.9785 17.0737 21.2998 16 21.2998C13.0729 21.2998 10.7002 18.9271 10.7002 16C10.7002 13.0729 13.0729 10.7002 16 10.7002ZM16 13.2998C14.5088 13.2998 13.2998 14.5088 13.2998 16C13.2998 17.4912 14.5088 18.7002 16 18.7002C17.4912 18.7002 18.7002 17.4912 18.7002 16C18.7002 14.5088 17.4912 13.2998 16 13.2998Z" />
+          </svg>
+          <div class="icon-label">保险</div>
+          <div class="icon-class">s4 · grad-1</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-mall-s4">
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M21.9385 4.00586C24.4569 4.12798 26.5084 6.11894 26.6816 8.66016L27.6357 22.6602C27.8325 25.5486 25.5427 28 22.6475 28H9.23242C6.47083 28 4.25059 25.7667 4.23242 23.0381L4.2373 22.7734L4.87402 8.77344C4.99162 6.18634 7.06043 4.13147 9.62012 4.00586L9.86914 4H21.6934L21.9385 4.00586ZM9.86914 5.7998C8.15839 5.7998 6.74966 7.14554 6.67188 8.85449L6.03613 22.8545C5.95329 24.677 7.40808 26.2002 9.23242 26.2002H22.6475C24.5005 26.2002 25.9659 24.6309 25.8398 22.7822L24.8857 8.78223C24.7712 7.10348 23.376 5.80002 21.6934 5.7998H9.86914Z" />
+            <path class="icon-main" d="M19.7177 10.7851C19.8363 10.0775 20.506 9.59975 21.2138 9.71772C21.9219 9.83583 22.4002 10.5057 22.2822 11.2138L20.9999 10.9999C22.2823 11.2137 22.2823 11.2149 22.2822 11.2158V11.2167C22.282 11.2179 22.2814 11.2194 22.2812 11.2207C22.2808 11.2232 22.2798 11.2265 22.2792 11.2294C22.2782 11.2352 22.2777 11.2418 22.2763 11.249C22.2736 11.2637 22.2699 11.2813 22.2656 11.3017C22.2569 11.3428 22.2447 11.3958 22.2285 11.458C22.1959 11.5822 22.1459 11.7474 22.0712 11.9394C21.9225 12.3219 21.6698 12.827 21.249 13.332C20.3701 14.3866 18.8749 15.2998 16.4999 15.2998C14.125 15.2998 12.6298 14.3866 11.7509 13.332C11.3301 12.827 11.0774 12.3219 10.9287 11.9394C10.854 11.7474 10.804 11.5822 10.7714 11.458C10.7552 11.3958 10.743 11.3428 10.7343 11.3017C10.73 11.2813 10.7263 11.2637 10.7236 11.249C10.7222 11.2418 10.7217 11.2352 10.7207 11.2294C10.7201 11.2265 10.7191 11.2232 10.7187 11.2207C10.7185 11.2194 10.7179 11.2179 10.7177 11.2167V11.2158C10.7176 11.2149 10.7176 11.2137 11.9999 10.9999L10.7177 11.2138C10.5997 10.5057 11.078 9.83583 11.7861 9.71772C12.4939 9.59975 13.1636 10.0775 13.2822 10.7851V10.7832C13.282 10.7822 13.2814 10.7811 13.2812 10.7802C13.2809 10.7784 13.2805 10.7768 13.2802 10.7753C13.2797 10.7725 13.2796 10.7702 13.2792 10.7685L13.2871 10.7998C13.2975 10.8395 13.318 10.9092 13.3525 10.998C13.4225 11.1779 13.5451 11.4233 13.749 11.6679C14.1202 12.1133 14.8753 12.7001 16.4999 12.7001C18.1246 12.7001 18.8797 12.1133 19.2509 11.6679C19.4548 11.4233 19.5774 11.1779 19.6474 10.998C19.6819 10.9092 19.7024 10.8395 19.7128 10.7998L19.7207 10.7685C19.7203 10.7702 19.7202 10.7725 19.7197 10.7753C19.7194 10.7768 19.719 10.7784 19.7187 10.7802C19.7185 10.7811 19.7179 10.7822 19.7177 10.7832V10.7851Z" />
+          </svg>
+          <div class="icon-label">商城</div>
+          <div class="icon-class">s4 · grad-2</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-points-s4">
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29C8.8203 29 3 23.1797 3 16C3 8.8203 8.8203 3 16 3ZM16 4.7998C9.81441 4.7998 4.7998 9.81441 4.7998 16C4.7998 22.1856 9.81441 27.2002 16 27.2002C22.1856 27.2002 27.2002 22.1856 27.2002 16C27.2002 9.81441 22.1856 4.7998 16 4.7998Z" />
+<path class="icon-main" d="M21.1617 15.3235C21.6694 15.8312 21.6694 16.654 21.1617 17.1617L16.9191 21.4043C16.4114 21.912 15.5886 21.912 15.0809 21.4043L10.8383 17.1617C10.3306 16.654 10.3306 15.8312 10.8383 15.3235L15.0809 11.0808C15.5886 10.5732 16.4114 10.5732 16.9191 11.0808L21.1617 15.3235ZM13.5956 16.2426L16 18.647L18.4044 16.2426L16 13.8381L13.5956 16.2426Z" />
+          </svg>
+          <div class="icon-label">积分</div>
+          <div class="icon-class">s4 · grad-3</div>
+
+        </div>
+        <div class="icon-card">
+          <svg width="32" height="32" viewBox="0 0 32 32" class="s4 grad-1" id="svg-bundle-s4">
+            <path class="icon-sub" fill-rule="evenodd" clip-rule="evenodd" d="M9.20508 4.64783C10.4472 3.31026 12.4515 3.01346 14.0283 3.93299L17.3857 5.891L18.2158 5.32166C19.8869 4.17283 22.1602 4.49638 23.4443 6.0658L25.9355 9.11072C27.6933 9.532 29 11.1135 29 13.0004V24.0004C28.9998 26.2094 27.209 28.0004 25 28.0004H7L6.79395 27.9955C4.68066 27.8883 3.00016 26.1403 3 24.0004V13.0004C3 11.7793 3.54764 10.6862 4.41016 9.95252L4.34082 9.88807L9.20508 4.64783ZM7 10.8002C5.78497 10.8002 4.7998 11.7853 4.7998 13.0004V24.0004C4.79997 25.2153 5.78508 26.2006 7 26.2006H25C26.2149 26.2006 27.2 25.2153 27.2002 24.0004V13.0004C27.2002 11.7853 26.215 10.8002 25 10.8002H7ZM22.0508 7.20545C21.3593 6.36061 20.135 6.18664 19.2354 6.80506L16.042 9.00037H23.5195L22.0508 7.20545ZM13.1211 5.48865C12.272 4.9935 11.1932 5.15315 10.5244 5.87342L7.62012 9.00037H12.8652L15.7461 7.01893L13.1211 5.48865Z" />
+<path class="icon-main" d="M10.7002 16C10.7002 15.282 11.282 14.7002 12 14.7002C12.718 14.7002 13.2998 15.282 13.2998 16C13.2998 17.4912 14.5088 18.7002 16 18.7002C17.4912 18.7002 18.7002 17.4912 18.7002 16C18.7002 15.282 19.282 14.7002 20 14.7002C20.718 14.7002 21.2998 15.282 21.2998 16C21.2998 18.9271 18.9271 21.2998 16 21.2998C13.0729 21.2998 10.7002 18.9271 10.7002 16Z" />
+          </svg>
+          <div class="icon-label">套餐</div>
+          <div class="icon-class">s4 · grad-1</div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function setTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      document.querySelectorAll('.theme-btn').forEach(b => b.classList.toggle('active', b.dataset.theme === theme));
+    }
+    function cycleGrad(btn, dir) {
+      const card = btn.closest('.icon-card');
+      const svg = card.querySelector('svg');
+      const grads = ['grad-1', 'grad-2', 'grad-3', 'grad-4'];
+      const current = grads.findIndex(c => svg.classList.contains(c));
+      const next = (current + dir + 4) % 4;
+      svg.classList.remove(...grads);
+      svg.classList.add(grads[next]);
+    }
+    function prevGrad(btn) { cycleGrad(btn, -1); }
+    function nextGrad(btn) { cycleGrad(btn, 1); }
+  </script>
+</body>
+
+</html>

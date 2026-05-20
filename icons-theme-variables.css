@@ -1,0 +1,108 @@
+/**
+ * ============================================================
+ * 图标主题 CSS 变量系统（6 基础色 + 4 渐变组合）
+ * ============================================================
+ *
+ * 结构说明：
+ *   --icon-color-1 ~ --icon-color-6 ：6 个基础色变量
+ *
+ * 4 类渐变（由 6 个基础色自动组合）：
+ *   渐变 1 = color-1 → color-2
+ *   渐变 2 = color-3 → color-4
+ *   渐变 3 = color-5 → color-6
+ *   渐变 4 = color-1 → color-5
+ *
+ * 切换主题时，只需修改 6 个基础色，4 类渐变自动跟随变化。
+ * 具体哪个图标用哪类渐变，由 SVG sprite 中的 symbol 决定，可随时调整。
+ * ============================================================
+ */
+
+/* -------------------- 默认 / 青色主题 -------------------- */
+:root,
+[data-theme="default"],
+[data-theme="cyan"] {
+  --icon-color-1: #008BFE;
+  --icon-color-2: #45DAD1;
+  --icon-color-3: #FE860E;
+  --icon-color-4: #FFAF16;
+  --icon-color-5: #536DFD;
+  --icon-color-6: #77A2FA;
+
+  --bg-page: #f5f7fa;
+  --bg-card: #ffffff;
+  --bg-code: #f1f3f5;
+  --text-primary: #1a1a2e;
+  --text-secondary: #666666;
+  --border-color: #e8e8e8;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* -------------------- 蓝色主题 -------------------- */
+[data-theme="blue"] {
+  --icon-color-1: #247DFF;
+  --icon-color-2: #7AF1FF;
+  --icon-color-3: #FF840A;
+  --icon-color-4: #FFDB43;
+  --icon-color-5: #9676FF;
+  --icon-color-6: #FC99E5;
+
+  --bg-page: #eef2f7;
+  --bg-card: #ffffff;
+  --bg-code: #e8edf3;
+  --text-primary: #1a1a2e;
+  --text-secondary: #5a6680;
+  --border-color: #d5dce8;
+  --shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+/* -------------------- 红色主题 -------------------- */
+[data-theme="red"] {
+  --icon-color-1: #FC4225;
+  --icon-color-2: #FF7D4B;
+  --icon-color-3: #9676FF;
+  --icon-color-4: #FC99E5;
+  --icon-color-5: #FFAF16;
+  --icon-color-6: #FFDB43;
+
+  --bg-page: #fdf2f2;
+  --bg-card: #ffffff;
+  --bg-code: #f9ecec;
+  --text-primary: #2d1f1f;
+  --text-secondary: #7a5a5a;
+  --border-color: #f0d5d5;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+/*
+ * ==================== 与开发色变量映射 ====================
+ *
+ * 如果项目已有变量系统，直接替换为 var(--color-N)：
+ *
+ *   --icon-color-1: var(--color-1, #008BFE);
+ *   --icon-color-2: var(--color-2, #45DAD1);
+ *   --icon-color-3: var(--color-3, #FE860E);
+ *   --icon-color-4: var(--color-4, #FFAF16);
+ *   --icon-color-5: var(--color-5, #536DFD);
+ *   --icon-color-6: var(--color-6, #77A2FA);
+ *
+ * 维护 6 个基础色变量即可，4 类渐变自动组合。
+ */
+
+/*
+ * ==================== SVG 内部 Layer Class 系统 ====================
+ *
+ * 每个 icon symbol 内部形状已按功能分层，并赋予语义 class：
+ *
+
+ *
+ *   symbol 级别 gradient 类：
+ *     .grad-1  → 使用 grad-1 渐变族（color1~2）
+ *     .grad-2  → 使用 grad-2 渐变族（color3~4）
+ *     .grad-3  → 使用 grad-3 渐变族（color5~6）
+ *     .grad-4  → 使用 grad-4 渐变族（color1~5）
+ *
+ *   修改某个 icon 颜色时，只需改 symbol 的 grad 类：
+ *     <symbol id="icon-oil-s1-c2" class="s1 grad-2">  ← 改这里
+ *
+ *   所有样式规则已内置于 icons-svg-sprite.svg 的 <style> 中。
+ */
